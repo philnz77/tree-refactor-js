@@ -1,0 +1,36 @@
+{
+  "name": "jfactor",
+  "version": "1.0.0",
+  "description":
+    "tool to refactor javascript code, more powerful than text based search and replace",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": ["prettier --write", "git add"]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philnz77/jfactor.git"
+  },
+  "keywords": ["javascript", "refactor", "babylon", "lodash", "lodashfp"],
+  "author": "philnz77",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/philnz77/jfactor/issues"
+  },
+  "homepage": "https://github.com/philnz77/jfactor#readme",
+  "dependencies": {
+    "babel-traverse": "^6.26.0",
+    "babylon": "^6.18.0",
+    "lodash": "^4.17.5"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.4",
+    "mocha": "^5.0.5",
+    "prettier": "1.11.1"
+  }
+}
