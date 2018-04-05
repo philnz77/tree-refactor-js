@@ -23,14 +23,30 @@ describe("Array", function() {
   describe("#changeSection()", function() {
     it("should change a section", function() {
       const origCharArray = pure.createCharArray("abcxxxe");
-      const changedCharArray = pure.changeSection(origCharArray, 3, 6, "d");
+      const changedCharArray = pure.changeSection(
+        origCharArray,
+        { start: 3, end: 6 },
+        "d"
+      );
       assert.deepEqual(pure.flattenCharArray(changedCharArray), "abcde");
     });
     it("should change multiple sections", function() {
       const origCharArray = pure.createCharArray("abcxxxefyyklmzp");
-      const changedX = pure.changeSection(origCharArray, 3, 6, "d");
-      const changedY = pure.changeSection(changedX, 8, 10, "ghij");
-      const changedZ = pure.changeSection(changedY, 13, 14, "no");
+      const changedX = pure.changeSection(
+        origCharArray,
+        { start: 3, end: 6 },
+        "d"
+      );
+      const changedY = pure.changeSection(
+        changedX,
+        { start: 8, end: 10 },
+        "ghij"
+      );
+      const changedZ = pure.changeSection(
+        changedY,
+        { start: 13, end: 14 },
+        "no"
+      );
       assert.deepEqual(pure.flattenCharArray(changedZ), "abcdefghijklmnop");
     });
   });

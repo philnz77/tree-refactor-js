@@ -10,12 +10,12 @@ function flattenCharArray(charArray) {
   }
   return "";
 }
-function changeSection(charArray, start, end, newSectionText) {
+function changeSection(charArray, { start, end }, newSectionText) {
   const changeRange = _.range(start, end);
   const indexAlreadyChanged = changeRange.find(i => !_.isString(charArray[i]));
   if (!_.isUndefined(indexAlreadyChanged)) {
     throw new Error(`
-      Could not change section to because the char at ${indexAlreadyChanged} had alread been changed.
+      Could not change section to because the char at ${indexAlreadyChanged} had already been changed.
       Attempted new section text:
       ${newSectionText}
      `);
