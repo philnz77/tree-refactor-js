@@ -1,5 +1,5 @@
 {
-  "name": "jfactor",
+  "name": "tree-refactor-js",
   "version": "1.0.0",
   "description":
     "tool to refactor javascript code, more powerful than text based search and replace",
@@ -13,15 +13,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/philnz77/jfactor.git"
+    "url": "git+https://github.com/philnz77/tree-refactor-js.git"
   },
-  "keywords": ["javascript", "refactor", "babylon", "lodash", "lodashfp"],
+  "keywords": ["javascript", "refactor", "babylon", "lodash", "lodashfp", "ast", "tree"],
   "author": "philnz77",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/philnz77/jfactor/issues"
+    "url": "https://github.com/philnz77/tree-refactor-js/issues"
   },
-  "homepage": "https://github.com/philnz77/jfactor#readme",
+  "homepage": "https://github.com/philnz77/tree-refactor-js#readme",
   "dependencies": {
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",
