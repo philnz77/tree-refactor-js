@@ -40,22 +40,8 @@ function changeSectionToStatic(newSectionText, section, charArray) {
 const sortNumbersAsc = _.sortBy(_.identity);
 const csv = _.join(",");
 const getStartsAndEnds = _.pipe([_.map(s => [s.start, s.end]), _.flatten]);
-function validateSwapSectionsParams(swapOrder, sections, charArray) {
-  if (sections.length === 0) {
-    throw new Error("sections is empty");
-  }
-  const swapOrderStr = csv(swapOrder);
-  const noOrderStr = csv(_.range(0, sections.length));
-  if (swapOrderStr === noOrderStr) {
-    throw new Error(
-      `swap order ${swapOrderStr} is invalid, nothing is specified to be swapped`
-    );
-  }
-  if (csv(sortNumbersAsc(swapOrder)) !== noOrderStr) {
-    throw new Error(
-      `swap order ${swapOrderStr} is invalid, should be some rearrangement of ${noOrderStr}`
-    );
-  }
+
+function validateSectionsForEditing(sections, charArray) {
   const startAndEnds = getStartsAndEnds(sections);
   const startAndEndsCsv = csv(startAndEnds);
 
@@ -81,6 +67,24 @@ function validateSwapSectionsParams(swapOrder, sections, charArray) {
       );
     }
   }, sections);
+}
+function validateSwapSectionsParams(swapOrder, sections, charArray) {
+  if (sections.length === 0) {
+    throw new Error("sections is empty");
+  }
+  const swapOrderStr = csv(swapOrder);
+  const noOrderStr = csv(_.range(0, sections.length));
+  if (swapOrderStr === noOrderStr) {
+    throw new Error(
+      `swap order ${swapOrderStr} is invalid, nothing is specified to be swapped`
+    );
+  }
+  if (csv(sortNumbersAsc(swapOrder)) !== noOrderStr) {
+    throw new Error(
+      `swap order ${swapOrderStr} is invalid, should be some rearrangement of ${noOrderStr}`
+    );
+  }
+  validateSectionsForEditing(sections, charArray);
 }
 
 function swapSections(swapOrder, sections, charArray) {

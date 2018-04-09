@@ -15,7 +15,15 @@
     "type": "git",
     "url": "git+https://github.com/philnz77/tree-refactor-js.git"
   },
-  "keywords": ["javascript", "refactor", "babylon", "lodash", "lodashfp", "ast", "tree"],
+  "keywords": [
+    "javascript",
+    "refactor",
+    "babylon",
+    "lodash",
+    "lodashfp",
+    "ast",
+    "tree"
+  ],
   "author": "philnz77",
   "license": "MIT",
   "bugs": {
