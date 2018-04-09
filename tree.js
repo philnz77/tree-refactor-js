@@ -21,8 +21,31 @@ const grep = _.curry((predicate, ast) => {
   return results;
 });
 
+const reorderArgs = swapOrder => path => {
+  const nodeArgs = path.node.arguments;
+  return {
+    type: "swapSections",
+    swapOrder,
+    sections: nodeArgs.map(({ start, end }) => ({ start, end }))
+  };
+};
+
+const renameCall = newCall => path => {
+  const callee = path.node.callee;
+  return {
+    type: "changeSectionToStatic",
+    newSectionText: newCall,
+    section: {
+      start: callee.start,
+      end: callee.end
+    }
+  };
+};
+
 module.exports = {
   moduleJsxSpreadOptions,
   parse,
-  grep
+  grep,
+  reorderArgs,
+  renameCall
 };
