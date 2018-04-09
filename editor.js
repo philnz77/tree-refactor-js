@@ -41,32 +41,20 @@ const sortNumbersAsc = _.sortBy(_.identity);
 const csv = _.join(",");
 const getStartsAndEnds = _.pipe([_.map(s => [s.start, s.end]), _.flatten]);
 
-function validateSectionsForEditing(sections, charArray) {
-  const startAndEnds = getStartsAndEnds(sections);
-  const startAndEndsCsv = csv(startAndEnds);
-
-  if (startAndEndsCsv !== csv(sortNumbersAsc(startAndEnds))) {
+function validateSectionForEditing({ start, end }, charArray) {
+  if (_.isNull(charArray[start])) {
     throw new Error(
-      `starts and ends across sections should all be in order: ${startAndEndsCsv} ${csv(
-        sortNumbersAsc(startAndEnds)
-      )}`
+      `start (${start}) of swap section is in the middle of a change`
     );
   }
-  _.each(({ start, end }) => {
-    if (_.isNull(charArray[start])) {
-      throw new Error(
-        `start (${start}) of swap section is in the middle of a change`
-      );
-    }
-    if (end >= charArray.length) {
-      throw new Error(`end (${end}) of swap section is off the end`);
-    }
-    if (end < charArray.length - 1 && _.isNull(charArray[end + 1])) {
-      throw new Error(
-        `end (${end}) of swap section is in the middle of a change`
-      );
-    }
-  }, sections);
+  if (end >= charArray.length) {
+    throw new Error(`end (${end}) of swap section is off the end`);
+  }
+  if (end < charArray.length - 1 && _.isNull(charArray[end + 1])) {
+    throw new Error(
+      `end (${end}) of swap section is in the middle of a change`
+    );
+  }
 }
 function validateSwapSectionsParams(swapOrder, sections, charArray) {
   if (sections.length === 0) {
@@ -84,7 +72,19 @@ function validateSwapSectionsParams(swapOrder, sections, charArray) {
       `swap order ${swapOrderStr} is invalid, should be some rearrangement of ${noOrderStr}`
     );
   }
-  validateSectionsForEditing(sections, charArray);
+  const startAndEnds = getStartsAndEnds(sections);
+  const startAndEndsCsv = csv(startAndEnds);
+
+  if (startAndEndsCsv !== csv(sortNumbersAsc(startAndEnds))) {
+    throw new Error(
+      `starts and ends across sections should all be in order: ${startAndEndsCsv} ${csv(
+        sortNumbersAsc(startAndEnds)
+      )}`
+    );
+  }
+  _.each(section => {
+    validateSectionForEditing(section, charArray);
+  }, sections);
 }
 
 function swapSections(swapOrder, sections, charArray) {
