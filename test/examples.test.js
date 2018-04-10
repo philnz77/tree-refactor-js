@@ -3,6 +3,8 @@ const assert = require("assert");
 const { convertLodashGetToLodashFP } = require("../examples");
 
 const lodashGetFile1 = `
+import get from 'lodash/get';
+
 function foo(x){
   return get(x, 'a.b.c');
 }
@@ -12,6 +14,9 @@ function bar(x){
 }
 `;
 const lodashFPGetFile1Expected = `
+import get from 'lodash/fp/get';
+import getOr from 'lodash/fp/getOr';
+
 function foo(x){
   return get('a.b.c', x);
 }

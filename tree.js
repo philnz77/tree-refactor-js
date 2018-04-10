@@ -42,10 +42,19 @@ const renameCall = newCall => path => {
   };
 };
 
+const rewriteNodePath = _.curry((newSectionText, { node: { start, end } }) => {
+  return {
+    type: "changeSectionToStatic",
+    newSectionText,
+    section: { start, end }
+  };
+});
+
 module.exports = {
   moduleJsxSpreadOptions,
   parse,
   grep,
   reorderArgs,
-  renameCall
+  renameCall,
+  rewriteNodePath
 };
