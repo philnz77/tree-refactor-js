@@ -6,7 +6,6 @@ const parse = tree.parse(tree.moduleJsxSpreadOptions);
 const file1 = `
 import bar from './bar';
 import { baz } from './baz';
-
 console.log('a');
 const x = bar(5);
 const y = bar(5,6);
@@ -16,6 +15,7 @@ console.dir({
   ...baz(8)
 });
 `;
+
 describe("tree", function() {
   describe("#grep()", function() {
     it("should find 3 bar calls in file1", function() {

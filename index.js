@@ -4,5 +4,6 @@ const editor = require("./editor");
 module.exports = {
   tree,
   predicates,
-  editor
+  editor,
+  functionHunter
 };

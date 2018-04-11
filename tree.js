@@ -2,6 +2,7 @@ var _ = require("lodash/fp");
 
 const babylon = require("babylon");
 const traverse = require("babel-traverse").default;
+const p = require("./predicates");
 
 const moduleJsxSpreadOptions = {
   sourceType: "module",
