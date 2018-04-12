@@ -61,6 +61,24 @@ function findFunctionArgumentsFromNode(node, ast, { importParser } = {}) {
     return result;
   }
 
+  if (
+    node.type === "MemberExpression" &&
+    node.object.type === "Identifier" &&
+    node.property.type === "Identifier"
+  ) {
+    const wildcardImportPaths = tree.grep(
+      p.isWildcardImportWithLocalName(node.object.name),
+      ast
+    );
+    if (wildcardImportPaths.length > 1) {
+      throw new Error("didnt expect more than one wilcard import path");
+    }
+    if (wildcardImportPaths.length === 1) {
+      const importAst = importParser(wildcardImportPaths[0].node.source.value);
+      return findFunctionArgumentsFromIdentifier(node.property.name, importAst);
+    }
+  }
+
   return { status: "node_misunderstood" };
 }
 

@@ -14,7 +14,9 @@ import mapY from 'mapY';
 import mapZ from 'mapZ';
 import mapW from 'mapW';
 import mapS from 'mapS';
+import mapR from 'mapR';
 import { sTransformer } from 'file2';
+import * as v from 'fileV';
 console.log('a');
 const x = bar(5);
 const y = bar(5,6);
@@ -30,13 +32,18 @@ console.dir(mapZ([1,2,3], zTransformer));
 const wTransformer = x => x + 1;
 console.dir(mapW([1,2,3], wTransformer));
 console.dir(mapS([1,2,3], sTransformer));
+console.dir(mapR([1,2,3], v.vTransformer));
 `;
 const file2 = `
 export const sTransformer = x => x + 1;
 `;
+const fileV = `
+export const vTransformer = x => x + 1;
+`;
 const files = {
   file1,
-  file2
+  file2,
+  fileV
 };
 const importParser = fileName => {
   const fileContents = files[fileName];
@@ -91,6 +98,18 @@ describe("functionHunter", function() {
     it("should find a transformer with 1 param passed to mapS", function() {
       const ast = parse(file1);
       const mapPath = tree.grep(and(isCall, toCallee("mapS")), ast)[0];
+
+      const findResult = functionHunter.findFunctionArgumentsFromNode(
+        mapPath.node.arguments[1],
+        ast,
+        { importParser }
+      );
+      assert.equal(findResult.status, "ok");
+      assert.equal(findResult.params.length, 1);
+    });
+    it("should find a transformer with 1 param passed to mapR", function() {
+      const ast = parse(file1);
+      const mapPath = tree.grep(and(isCall, toCallee("mapR")), ast)[0];
 
       const findResult = functionHunter.findFunctionArgumentsFromNode(
         mapPath.node.arguments[1],
