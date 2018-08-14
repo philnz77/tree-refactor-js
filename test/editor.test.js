@@ -25,7 +25,6 @@ describe("editor", function() {
       const origCharArray = editor.createCharArray("abcxxxe");
       const changedCharArray = editor.changeSectionToStatic(
         "d",
-
         { start: 3, end: 6 },
         origCharArray
       );
@@ -52,6 +51,19 @@ describe("editor", function() {
       assert.deepEqual(editor.flattenCharArray(changedZ), "abcdefghijklmnop");
     });
   });
+
+  describe("#wrapSection()", function() {
+    it("should wrap a section", function() {
+      const origCharArray = editor.createCharArray("abcxxxe");
+      const changedCharArray = editor.wrapSection(
+        { prependText: "[", appendText: "]" },
+        { start: 3, end: 6 },
+        origCharArray
+      );
+      assert.deepEqual(editor.flattenCharArray(changedCharArray), "abc[xxx]e");
+    });
+  });
+
   describe("#swapSections", function() {
     it("should change a section", function() {
       const origCharArray = editor.createCharArray("bar(y, zz)");
@@ -125,6 +137,36 @@ describe("editor", function() {
       assert.deepEqual(
         editor.performTransformations(transformations, orig),
         "foo(bbaazz(zz, y), x)"
+      );
+    });
+
+    it("should perform multiple translations incuding wrap", function() {
+      const orig = "bat(foo(x, bar(y, zz)))";
+      const transformations = [
+        {
+          type: "swapSections",
+          swapOrder: [1, 0],
+          sections: [{ start: 8, end: 9 }, { start: 11, end: 21 }]
+        },
+        {
+          type: "swapSections",
+          swapOrder: [1, 0],
+          sections: [{ start: 15, end: 16 }, { start: 18, end: 20 }]
+        },
+        {
+          type: "changeSectionToStatic",
+          newSectionText: "bbaazz",
+          section: { start: 11, end: 14 }
+        },
+        {
+          type: "wrapSection",
+          wrapWith: { prependText: "[", appendText: "]" },
+          section: { start: 4, end: 22 }
+        }
+      ];
+      assert.deepEqual(
+        editor.performTransformations(transformations, orig),
+        "bat([foo(bbaazz(zz, y), x)])"
       );
     });
   });

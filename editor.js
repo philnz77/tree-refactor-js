@@ -37,6 +37,17 @@ function changeSectionToStatic(newSectionText, section, charArray) {
   result[start] = createCharArray(newSectionText);
   return result;
 }
+
+function wrapSection({ prependText, appendText }, section, charArray) {
+  const result = blankSections([section], charArray);
+  result[section.start] = [
+    createCharArray(prependText),
+    charArray.slice(section.start, section.end),
+    createCharArray(appendText)
+  ];
+  return result;
+}
+
 const sortNumbersAsc = _.sortBy(_.identity);
 const csv = _.join(",");
 const getStartsAndEnds = _.pipe([_.map(s => [s.start, s.end]), _.flatten]);
@@ -101,24 +112,40 @@ function swapSections(swapOrder, sections, charArray) {
   return result;
 }
 
-const sortSwapSectionsTransformations = _.sortBy(
-  ({ sections }) => _.last(sections).end - sections[0].start
-);
+const sortDynamicSectionsTransformations = _.sortBy(transformation => {
+  const sections = transformation.sections || [transformation.section];
+  return _.last(sections).end - sections[0].start;
+});
 const staticReducer = (charArray, transformation) =>
   changeSectionToStatic(
     transformation.newSectionText,
     transformation.section,
     charArray
   );
-const swapReducer = (charArray, transformation) =>
-  swapSections(transformation.swapOrder, transformation.sections, charArray);
+const dynamicReducer = (charArray, transformation) => {
+  if (transformation.type === "swapSections") {
+    return swapSections(
+      transformation.swapOrder,
+      transformation.sections,
+      charArray
+    );
+  }
+  if (transformation.type === "wrapSection") {
+    return wrapSection(
+      transformation.wrapWith,
+      transformation.section,
+      charArray
+    );
+  }
+  throw `unknown type ${transformation.type}`;
+};
 
 function performTransformations(transformations, text) {
-  const [statics, swaps] = _.partition(
+  const [statics, dynamics] = _.partition(
     t => t.type === "changeSectionToStatic",
     transformations
   );
-  const sortedSwaps = sortSwapSectionsTransformations(swaps);
+  const sortedDynamics = sortDynamicSectionsTransformations(dynamics);
 
   const startingCharArray = createCharArray(text);
   const charArrayAfterStatic = _.reduce(
@@ -126,12 +153,12 @@ function performTransformations(transformations, text) {
     startingCharArray,
     statics
   );
-  const charArrayAfterSwaps = _.reduce(
-    swapReducer,
+  const charArrayAfterDynamics = _.reduce(
+    dynamicReducer,
     charArrayAfterStatic,
-    sortedSwaps
+    sortedDynamics
   );
-  return flattenCharArray(charArrayAfterSwaps);
+  return flattenCharArray(charArrayAfterDynamics);
 }
 
 module.exports = {
@@ -139,5 +166,6 @@ module.exports = {
   flattenCharArray,
   changeSectionToStatic,
   swapSections,
-  performTransformations
+  performTransformations,
+  wrapSection
 };

@@ -31,6 +31,17 @@ const reorderArgs = swapOrder => path => {
   };
 };
 
+const varArgsToArray = argIndexToStartOn => path => {
+  const nodeArgs = path.node.arguments;
+  const start = nodeArgs[argIndexToStartOn].start;
+  const end = nodeArgs[nodeArgs.length - 1].end;
+  return {
+    type: "wrapSection",
+    wrapWith: { prependText: "[", appendText: "]" },
+    section: { start, end }
+  };
+};
+
 const renameCall = newCall => path => {
   const callee = path.node.callee;
   return {
@@ -57,5 +68,6 @@ module.exports = {
   grep,
   reorderArgs,
   renameCall,
-  rewriteNodePath
+  rewriteNodePath,
+  varArgsToArray
 };
