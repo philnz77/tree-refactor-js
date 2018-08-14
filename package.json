@@ -1,6 +1,6 @@
 {
   "name": "tree-refactor-js",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description":
     "tool to refactor javascript code, more powerful than text based search and replace",
   "main": "index.js",
