@@ -144,7 +144,7 @@ describe("editor", function() {
       const orig = "bat(foo(x, bar(y, zz)))";
       const transformations = [
         {
-           type: "swapSections",
+            type: "swapSections",
           swapOrder: [1, 0],
           sections: [{ start: 8, end: 9 }, { start: 11, end: 21 }]
         },
