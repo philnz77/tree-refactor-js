@@ -1,15 +1,17 @@
 {
   "name": "tree-refactor-js",
   "version": "1.2.0",
-  "description":
-    "tool to refactor javascript code, more powerful than text based search and replace",
+  "description": "tool to refactor javascript code, more powerful than text based search and replace",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,json,css,md}": ["prettier --write", "git add"]
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -33,13 +35,12 @@
   "dependencies": {
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",
-    "lodash": "^4.17.10",
-    "rimraf": "^2.6.2"
+    "lodash": "^4.17.15",
+    "rimraf": "^3.0.0"
   },
   "devDependencies": {
-    "husky": "^0.14.3",
-    "lint-staged": "^7.2.2",
-    "mocha": "^5.2.0",
-    "prettier": "1.11.1"
+    "lint-staged": "^9.4.1",
+    "mocha": "^6.2.1",
+    "prettier": "^1.18.2"
   }
 }
