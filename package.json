@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "lint-staged": "^9.4.1",
-    "mocha": "^6.2.1",
+    "mocha": "^10.2.0",
     "prettier": "^1.18.2"
   }
 }
